@@ -191,3 +191,6 @@ shape = SubResource("CircleShape2D_w2eb2")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Unit/movetest"]
 sprite_frames = SubResource("SpriteFrames_l7pub")
+
+[connection signal="Hit" from="Unit/PlayerG1" to="Unit/PlayerG1" method="_on_hit"]
+[connection signal="body_entered" from="Unit/PlayerG1" to="Unit/PlayerG1" method="_on_body_entered"]

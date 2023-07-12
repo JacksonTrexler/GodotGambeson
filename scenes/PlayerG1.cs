@@ -3,8 +3,13 @@ using System;
 
 public partial class PlayerG1 : Area2D
 {
+	[Signal]
+	public delegate void HitEventHandler();
+	
 	[Export]
 	public int Speed {get; set;} = 100;
+	public bool IsInvuln {get; set;} = false;
+	public int InvulnLeft {get; set;} = 60;
 	
 	public Vector2 ScreenSize;
 	
@@ -12,6 +17,8 @@ public partial class PlayerG1 : Area2D
 	public override void _Ready()
 	{
 		ScreenSize = GetViewportRect().Size;
+		Hide();
+		Start(new Vector2(30, 30));
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,10 +28,6 @@ public partial class PlayerG1 : Area2D
 		
 	}
 	
-	public override void _Input()
-	{
-		
-	}
 	
 	public override void _PhysicsProcess(double delta)
 	{
@@ -59,7 +62,7 @@ public partial class PlayerG1 : Area2D
 		Vector2 inputDir = Input.GetVector("move_left", "move_right", "move_up", "move_down");
 		velocity = inputDir * Speed;
 		
-		var animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		var aSpr2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		
 		//Move player
 		if(velocity.Length() > 0)
@@ -73,11 +76,57 @@ public partial class PlayerG1 : Area2D
 			
 			Position += velocity * (float)delta;
 			Position = new Vector2(x: Mathf.Clamp(Position.X, 0, ScreenSize.X),y: Mathf.Clamp(Position.Y, 0, ScreenSize.Y));
-			animatedSprite2D.Play();
+			aSpr2D.Play();
+			aSpr2D.Animation = "walk";
+			if (velocity.X != 0){
+				aSpr2D.FlipH = velocity.X < 0;
+			}
+			
 		}
 		else
 		{
-			animatedSprite2D.Stop();
+			//aSpr2D.Stop();
+			aSpr2D.Animation = "wait";
 		}
+		
+		/*
+		if (velocity.X != 0 || velocity.Y != 0)
+		{
+			//aSpr2D.Animation = "walk";
+			//aSpr2D.FlipV = false;
+			//if (velocity.X != 0){
+			//	aSpr2D.FlipH = velocity.X < 0;
+			//}
+			
+		}
+		else if (velocity.Y == 0 && velocity.X == 0)
+		{
+			aSpr2D.Animation = "wait";
+		}
+		*/
+	}
+	
+	public void Start(Vector2 position)
+	{
+		Console.WriteLine("starting");
+		Position = position;
+		Show();
+		GetNode<CollisionShape2D>("CollisionShape2D").Disabled = false;
+	}
+	
+	private void _on_body_entered(Node2D body)
+	{
+		Hide();
+		EmitSignal(SignalName.Hit);
+		
+		GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred(CollisionShape2D.PropertyName.Disabled, true);
+	}
+	
+	private void _on_hit()
+	{
+		
 	}
 }
+
+
+
