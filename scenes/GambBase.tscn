@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://byjq1hyn82i1p"]
+[gd_scene load_steps=34 format=3 uid="uid://byjq1hyn82i1p"]
 
 [ext_resource type="Texture2D" uid="uid://rqfcpoxhj80b" path="res://art/unit/WarriorGal/WarriorGalHover.png" id="1_u3f04"]
 [ext_resource type="Script" path="res://scenes/PlayerG1.cs" id="1_vrun3"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://xnwymk6fb7vu" path="res://art/unit/WarriorGal/WarriorGalWalk-Sheet2.png" id="4_o1kcd"]
 [ext_resource type="Script" path="res://scenes/Testmove.cs" id="6_keref"]
 [ext_resource type="Texture2D" uid="uid://ccx75cu0qu1q0" path="res://art/ui/ProtoLancinEmblem.png" id="7_yup20"]
+[ext_resource type="Texture2D" uid="uid://3bcmd1e2g0gr" path="res://art/unit/mistman/MistmanIdle-Sheet.png" id="8_0wqub"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l2m0a"]
 atlas = ExtResource("2_4pv4q")
@@ -159,6 +160,57 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_6a2dq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s8h3r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_yup20")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7p2nh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bseb1"]
+atlas = ExtResource("8_0wqub")
+region = Rect2(0, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ux1fo"]
+atlas = ExtResource("8_0wqub")
+region = Rect2(32, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2as5"]
+atlas = ExtResource("8_0wqub")
+region = Rect2(64, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5pru"]
+atlas = ExtResource("8_0wqub")
+region = Rect2(96, 0, 32, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hgjm7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bseb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ux1fo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2as5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5pru")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
 [node name="Node2D" type="Node2D"]
 
 [node name="Tile" type="Node2D" parent="."]
@@ -167,30 +219,64 @@ animations = [{
 
 [node name="Unit" type="Node2D" parent="."]
 
-[node name="PlayerG1" type="Area2D" parent="Unit"]
+[node name="MiniGames" type="Node2D" parent="."]
+
+[node name="Dodgeball" type="Node2D" parent="MiniGames"]
+
+[node name="PlayerG1" type="Area2D" parent="MiniGames/Dodgeball"]
 position = Vector2(23, 28)
 script = ExtResource("1_vrun3")
 metadata/_edit_group_ = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Unit/PlayerG1"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/PlayerG1"]
 texture_filter = 1
 position = Vector2(1, -1)
 sprite_frames = SubResource("SpriteFrames_yva72")
-animation = &"walk"
+animation = &"wait"
+frame_progress = 0.181169
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit/PlayerG1"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/PlayerG1"]
 visible = false
 position = Vector2(1.5, 3.5)
 shape = SubResource("RectangleShape2D_tde65")
 
-[node name="movetest" type="CharacterBody2D" parent="Unit"]
+[node name="movetest" type="CharacterBody2D" parent="MiniGames/Dodgeball"]
+visible = false
 script = ExtResource("6_keref")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Unit/movetest"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/movetest"]
+scale = Vector2(0.455, 0.455)
 shape = SubResource("CircleShape2D_w2eb2")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Unit/movetest"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/movetest"]
 sprite_frames = SubResource("SpriteFrames_l7pub")
 
-[connection signal="Hit" from="Unit/PlayerG1" to="Unit/PlayerG1" method="_on_hit"]
-[connection signal="body_entered" from="Unit/PlayerG1" to="Unit/PlayerG1" method="_on_body_entered"]
+[node name="ProjectileA" type="RigidBody2D" parent="MiniGames/Dodgeball"]
+visible = false
+collision_mask = 0
+gravity_scale = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/ProjectileA"]
+scale = Vector2(0.44, 0.44)
+shape = SubResource("CircleShape2D_6a2dq")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/ProjectileA"]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_s8h3r")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="MiniGames/Dodgeball/ProjectileA"]
+
+[node name="EnemyA" type="Area2D" parent="MiniGames/Dodgeball"]
+position = Vector2(112, 42)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/EnemyA"]
+shape = SubResource("RectangleShape2D_7p2nh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/EnemyA"]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_hgjm7")
+animation = &"idle"
+frame_progress = 0.0851998
+
+[connection signal="Hit" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_hit"]
+[connection signal="body_entered" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_body_entered"]
