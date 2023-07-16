@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://byjq1hyn82i1p"]
+[gd_scene load_steps=42 format=3 uid="uid://byjq1hyn82i1p"]
 
 [ext_resource type="Texture2D" uid="uid://rqfcpoxhj80b" path="res://art/unit/WarriorGal/WarriorGalHover.png" id="1_u3f04"]
 [ext_resource type="Script" path="res://scenes/PlayerG1.cs" id="1_vrun3"]
@@ -8,7 +8,9 @@
 [ext_resource type="Script" path="res://scenes/Testmove.cs" id="6_keref"]
 [ext_resource type="Texture2D" uid="uid://ccx75cu0qu1q0" path="res://art/ui/ProtoLancinEmblem.png" id="7_yup20"]
 [ext_resource type="Texture2D" uid="uid://3bcmd1e2g0gr" path="res://art/unit/mistman/MistmanIdle-Sheet.png" id="8_0wqub"]
+[ext_resource type="Script" path="res://scenes/ProjectileA.cs" id="8_3xehf"]
 [ext_resource type="Texture2D" uid="uid://bbm75xv2e83kf" path="res://art/unit/mistman/MistShot-Sheet.png" id="8_oqej6"]
+[ext_resource type="Script" path="res://scenes/EnemyA.cs" id="10_cfitq"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l2m0a"]
 atlas = ExtResource("2_4pv4q")
@@ -146,7 +148,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_tde65"]
-size = Vector2(23, 27)
+size = Vector2(15, 22)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_w2eb2"]
 
@@ -161,7 +163,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_6a2dq"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_17p27"]
+radius = 15.9091
+height = 45.4545
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_11aoj"]
 atlas = ExtResource("8_oqej6")
@@ -271,10 +275,10 @@ texture_filter = 1
 position = Vector2(1, -1)
 sprite_frames = SubResource("SpriteFrames_yva72")
 animation = &"wait"
-frame_progress = 0.0320106
+frame_progress = 0.546207
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/PlayerG1"]
-position = Vector2(1.5, 3.5)
+position = Vector2(1.5, 4)
 shape = SubResource("RectangleShape2D_tde65")
 
 [node name="movetest" type="CharacterBody2D" parent="MiniGames/Dodgeball"]
@@ -291,17 +295,21 @@ sprite_frames = SubResource("SpriteFrames_l7pub")
 [node name="ProjectileA" type="RigidBody2D" parent="MiniGames/Dodgeball"]
 collision_mask = 0
 gravity_scale = 0.0
+script = ExtResource("8_3xehf")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/ProjectileA"]
+rotation = 1.5708
 scale = Vector2(0.44, 0.44)
-shape = SubResource("CircleShape2D_6a2dq")
+shape = SubResource("CapsuleShape2D_17p27")
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/ProjectileA"]
 texture_filter = 3
+scale = Vector2(0.765, 0.765)
 sprite_frames = SubResource("SpriteFrames_s8h3r")
 animation = &"active"
-frame_progress = 0.1832
+frame = 1
+frame_progress = 0.813244
 metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="MiniGames/Dodgeball/ProjectileA"]
@@ -309,6 +317,7 @@ metadata/_edit_group_ = true
 
 [node name="EnemyA" type="Area2D" parent="MiniGames/Dodgeball"]
 position = Vector2(112, 42)
+script = ExtResource("10_cfitq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/EnemyA"]
 shape = SubResource("RectangleShape2D_7p2nh")
@@ -318,8 +327,9 @@ metadata/_edit_group_ = true
 texture_filter = 3
 sprite_frames = SubResource("SpriteFrames_hgjm7")
 animation = &"idle"
-frame_progress = 0.531789
+frame_progress = 0.0193278
 metadata/_edit_group_ = true
 
 [connection signal="Hit" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_hit"]
 [connection signal="body_entered" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_body_entered"]
+[connection signal="screen_exited" from="MiniGames/Dodgeball/ProjectileA/VisibleOnScreenNotifier2D" to="MiniGames/Dodgeball/ProjectileA" method="_on_visible_on_screen_notifier_2d_screen_exited"]
