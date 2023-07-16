@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://byjq1hyn82i1p"]
+[gd_scene load_steps=40 format=3 uid="uid://byjq1hyn82i1p"]
 
 [ext_resource type="Texture2D" uid="uid://rqfcpoxhj80b" path="res://art/unit/WarriorGal/WarriorGalHover.png" id="1_u3f04"]
 [ext_resource type="Script" path="res://scenes/PlayerG1.cs" id="1_vrun3"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://scenes/Testmove.cs" id="6_keref"]
 [ext_resource type="Texture2D" uid="uid://ccx75cu0qu1q0" path="res://art/ui/ProtoLancinEmblem.png" id="7_yup20"]
 [ext_resource type="Texture2D" uid="uid://3bcmd1e2g0gr" path="res://art/unit/mistman/MistmanIdle-Sheet.png" id="8_0wqub"]
+[ext_resource type="Texture2D" uid="uid://bbm75xv2e83kf" path="res://art/unit/mistman/MistShot-Sheet.png" id="8_oqej6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l2m0a"]
 atlas = ExtResource("2_4pv4q")
@@ -162,11 +163,48 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_6a2dq"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_11aoj"]
+atlas = ExtResource("8_oqej6")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krfm2"]
+atlas = ExtResource("8_oqej6")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y2to4"]
+atlas = ExtResource("8_oqej6")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5je03"]
+atlas = ExtResource("8_oqej6")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sxl77"]
+atlas = ExtResource("8_oqej6")
+region = Rect2(0, 0, 32, 32)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_s8h3r"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("7_yup20")
+"texture": SubResource("AtlasTexture_11aoj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_krfm2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y2to4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5je03")
+}],
+"loop": true,
+"name": &"active",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sxl77")
 }],
 "loop": true,
 "name": &"default",
@@ -233,10 +271,9 @@ texture_filter = 1
 position = Vector2(1, -1)
 sprite_frames = SubResource("SpriteFrames_yva72")
 animation = &"wait"
-frame_progress = 0.181169
+frame_progress = 0.0320106
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/PlayerG1"]
-visible = false
 position = Vector2(1.5, 3.5)
 shape = SubResource("RectangleShape2D_tde65")
 
@@ -252,31 +289,37 @@ shape = SubResource("CircleShape2D_w2eb2")
 sprite_frames = SubResource("SpriteFrames_l7pub")
 
 [node name="ProjectileA" type="RigidBody2D" parent="MiniGames/Dodgeball"]
-visible = false
 collision_mask = 0
 gravity_scale = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/ProjectileA"]
 scale = Vector2(0.44, 0.44)
 shape = SubResource("CircleShape2D_6a2dq")
+metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/ProjectileA"]
 texture_filter = 3
 sprite_frames = SubResource("SpriteFrames_s8h3r")
+animation = &"active"
+frame_progress = 0.1832
+metadata/_edit_group_ = true
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="MiniGames/Dodgeball/ProjectileA"]
+metadata/_edit_group_ = true
 
 [node name="EnemyA" type="Area2D" parent="MiniGames/Dodgeball"]
 position = Vector2(112, 42)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MiniGames/Dodgeball/EnemyA"]
 shape = SubResource("RectangleShape2D_7p2nh")
+metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="MiniGames/Dodgeball/EnemyA"]
 texture_filter = 3
 sprite_frames = SubResource("SpriteFrames_hgjm7")
 animation = &"idle"
-frame_progress = 0.0851998
+frame_progress = 0.531789
+metadata/_edit_group_ = true
 
 [connection signal="Hit" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_hit"]
 [connection signal="body_entered" from="MiniGames/Dodgeball/PlayerG1" to="MiniGames/Dodgeball/PlayerG1" method="_on_body_entered"]
