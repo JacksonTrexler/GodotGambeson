@@ -1,0 +1,57 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmc34834qcqyo"]
+
+[ext_resource type="Script" path="res://scenes/EnemyA.cs" id="1_1oh8q"]
+[ext_resource type="Texture2D" uid="uid://3bcmd1e2g0gr" path="res://art/unit/mistman/MistmanIdle-Sheet.png" id="2_nywg1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7p2nh"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bseb1"]
+atlas = ExtResource("2_nywg1")
+region = Rect2(0, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ux1fo"]
+atlas = ExtResource("2_nywg1")
+region = Rect2(32, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2as5"]
+atlas = ExtResource("2_nywg1")
+region = Rect2(64, 0, 32, 38)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5pru"]
+atlas = ExtResource("2_nywg1")
+region = Rect2(96, 0, 32, 38)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hgjm7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bseb1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ux1fo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2as5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5pru")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="EnemyA" type="Area2D"]
+position = Vector2(112, 42)
+script = ExtResource("1_1oh8q")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7p2nh")
+metadata/_edit_group_ = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+sprite_frames = SubResource("SpriteFrames_hgjm7")
+animation = &"idle"
+frame_progress = 0.0193278
+metadata/_edit_group_ = true

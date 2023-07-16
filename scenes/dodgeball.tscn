@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://cn7w0jrqveawl"]
+
+[ext_resource type="PackedScene" uid="uid://diil5eg5ofmcc" path="res://scenes/instances/player_g_1.tscn" id="1_2g4ct"]
+[ext_resource type="Script" path="res://scenes/Main.cs" id="1_6j6uo"]
+
+[sub_resource type="Curve2D" id="Curve2D_c8ih5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1920, 0, 0, 0, 0, 0, 1920, 1080, 0, 0, 0, 0, 0, 1080, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[node name="Main" type="Node"]
+script = ExtResource("1_6j6uo")
+
+[node name="PlayerG1" parent="." instance=ExtResource("1_2g4ct")]
+
+[node name="ProjTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="ProjPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_c8ih5")
+
+[node name="ProjSpawnLocation" type="PathFollow2D" parent="ProjPath"]
