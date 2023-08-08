@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cn7w0jrqveawl"]
+[gd_scene load_steps=5 format=3 uid="uid://cn7w0jrqveawl"]
 
 [ext_resource type="PackedScene" uid="uid://diil5eg5ofmcc" path="res://scenes/instances/player_g_1.tscn" id="1_2g4ct"]
 [ext_resource type="Script" path="res://scenes/Main.cs" id="1_6j6uo"]
+[ext_resource type="PackedScene" uid="uid://dsm7rcijvh8b5" path="res://scenes/instances/projectile_a.tscn" id="2_s41rw"]
 
 [sub_resource type="Curve2D" id="Curve2D_c8ih5"]
 _data = {
@@ -11,6 +12,7 @@ point_count = 6
 
 [node name="Main" type="Node"]
 script = ExtResource("1_6j6uo")
+EnemyScene = ExtResource("2_s41rw")
 
 [node name="PlayerG1" parent="." instance=ExtResource("1_2g4ct")]
 
